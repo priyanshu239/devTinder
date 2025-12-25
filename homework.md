@@ -1,0 +1,9 @@
+- create a repository
+- initialize the repository -- npm init
+- node_modules, package.json, package-lock.josn
+- install express
+- create a server
+- listen to port 7777
+- write a request handler for /test
+- install nodemon and update scripts inside package.json
+- installed nodemon -- auto restart our server when we make any changes
