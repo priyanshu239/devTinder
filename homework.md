@@ -7,3 +7,12 @@
 - write a request handler for /test
 - install nodemon and update scripts inside package.json
 - installed nodemon -- auto restart our server when we make any changes
+- initialised git 
+- gitignore
+- create a remote repo on github
+- push all code to remote origin
+- routes and extensions 
+- order of the routes matter a lot
+- http methods - post, get , patch , delete
+- install postman app and make a workspace/collection ans test API call
+- write logic to handle GET, POST, DELETE and test on POSTMAN
