@@ -16,3 +16,6 @@
 - http methods - post, get , patch , delete
 - install postman app and make a workspace/collection ans test API call
 - write logic to handle GET, POST, DELETE and test on POSTMAN
+- explore routing and use of ?, +, (), * int the routes and use of regex in routes /a/ /.*fly$/
+- reading the query params in the routes
+- readin the dynamic routes (req.params)
