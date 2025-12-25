@@ -19,3 +19,11 @@
 - explore routing and use of ?, +, (), * int the routes and use of regex in routes /a/ /.*fly$/
 - reading the query params in the routes
 - readin the dynamic routes (req.params)
+- handling multple route handlers
+- next()
+- next function and errors along with res.send()
+- middlewares. why do we need it??
+- how express js basically handles the requests behind the scene
+- difference between app.use and app.all (both works as middlewares for all method GET, POST, PATCH, DELETE)
+- write a dummy auth middleware for admin
+- write a dummy auth middleware for all user routes ,except /user/login
