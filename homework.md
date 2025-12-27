@@ -48,3 +48,5 @@ add the express.json middleware to your app
 - create a custom validator for gender
 - improve the DB schema - put appropriate validations on each field 
 - add timestamps to the userSchema 
+- API level validation on PATCH request and signup POST api
+- API level data sanitization

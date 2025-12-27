@@ -49,7 +49,13 @@ const userSchema = new mongoose.Schema({
         default: "This is a default about of the user",
     },
     skills: {
-        type: [String]
+        type: [String],
+        validate(arr) {
+            if(arr.length >10) {
+                throw new Error("Maximum 10 are skills allowed to enter")
+            }
+        }
+
     },
     // timestamps is for storing time when the user registered on our platform
 }, {timestamps :true});
