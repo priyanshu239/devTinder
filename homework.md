@@ -50,3 +50,6 @@ add the express.json middleware to your app
 - add timestamps to the userSchema 
 - API level validation on PATCH request and signup POST api
 - API level data sanitization
+- Data Sanitizing - Add API validator for each field
+- Install validator
+- Explore validator library functions and use validator functions for password, email, password

@@ -3,6 +3,7 @@ const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
 
+
 // Reads the json object convert it into javascript object
 app.use(express.json());
 
@@ -19,7 +20,7 @@ app.post("/signup", async (req, res) => {
     try{ 
         // New document will be collected in the user collection in the devTinder database
         await user.save();
-        res.send("User added succesfully");
+        res.send("User added succesfully!");
     } catch (err) {
         res.status(400).send(" Error saving user :" + err.message);
     }

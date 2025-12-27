@@ -1,4 +1,7 @@
 const mongoose  = require('mongoose');
+const validator = require("validator");
+
+
 
 const userSchema = new mongoose.Schema({
 
@@ -14,16 +17,26 @@ const userSchema = new mongoose.Schema({
     },
     emailId: {
         type: String,
-        lowercase: true,
         required: true,
         unique: true,
-        trim: true
+        lowercase: true,
+        trim: true,
+        validate(value) {
+            if(!validator.isEmail(value)){
+                throw new Error("Email id is not valid");
+            }
+        }
     },
     password: {
         type: String,
         required: true,
         minLength: 4,
         maxLength: 16,
+        validate(value){
+            if (!validator.isStrongPassword(value)){
+                throw new Error("Enter a Strong Password")
+            }
+        }
     },
     age: {
         type: Number,
@@ -42,7 +55,13 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
-        default: "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
+        default: "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg=",
+        validate(value) {
+            if(!validator.isURL(value)){
+                throw new Error("Photo URL is invalid :" + value);
+             
+           }
+       },
     },
     about: {
         type: String,
@@ -55,7 +74,6 @@ const userSchema = new mongoose.Schema({
                 throw new Error("Maximum 10 are skills allowed to enter")
             }
         }
-
     },
     // timestamps is for storing time when the user registered on our platform
 }, {timestamps :true});
