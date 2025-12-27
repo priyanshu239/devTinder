@@ -1,32 +1,32 @@
-- create a repository
-- initialize the repository -- npm init
-- node_modules, package.json, package-lock.josn
-- install express
-- create a server
-- listen to port 7777
-- write a request handler for /test
-- install nodemon and update scripts inside package.json
-- installed nodemon -- auto restart our server when we make any changes
+- create a repository 
+- initialize the repository -- npm init 
+- node_modules, package.json, package-lock.josn 
+- install express 
+- create a server 
+- listen to port 7777 
+- write a request handler for /test 
+- install nodemon and update scripts inside package.json 
+- installed nodemon -- auto restart our server when we make any changes 
 - initialised git 
-- gitignore
+- gitignore 
 - create a remote repo on github
 - push all code to remote origin
 - routes and extensions 
 - order of the routes matter a lot
 - http methods - post, get , patch , delete
 - install postman app and make a workspace/collection ans test API call
-- write logic to handle GET, POST, DELETE and test on POSTMAN
-- explore routing and use of ?, +, (), * int the routes and use of regex in routes /a/ /.*fly$/
-- reading the query params in the routes
-- readin the dynamic routes (req.params)
-- handling multple route handlers
-- next()
-- next function and errors along with res.send()
-- middlewares. why do we need it??
-- how express js basically handles the requests behind the scene
-- difference between app.use and app.all (both works as middlewares for all method GET, POST, PATCH, DELETE)
-- write a dummy auth middleware for admin
-- write a dummy auth middleware for all user routes ,except /user/login
+- write logic to handle GET, POST, DELETE and test on POSTMAN 
+- explore routing and use of ?, +, (), * int the routes and use of regex in routes /a/ /.*fly$/ 
+- reading the query params in the routes 
+- readin the dynamic routes (req.params) 
+- handling multple route handlers 
+- next() 
+- next function and errors along with res.send() 
+- middlewares. why do we need it?? 
+- how express js basically handles the requests behind the scene 
+- difference between app.use and app.all (both works as middlewares for all method GET, POST, PATCH, DELETE) 
+- write a dummy auth middleware for admin 
+- write a dummy auth middleware for all user routes ,except /user/login 
 - error handling using app.use("/", (err, req, res, next) = {})
 - create a free cluster on mongodb official website (mongo atlas) 
 - install mongoose library
@@ -36,3 +36,7 @@
 - create a /signup API to add data to database
 - push some documents using API calls from postman
 - error handling using try catch
+- difference between js object and json
+add the express.json middleware to your app
+- make yoour signup API dynamic to recieve data from end user
+- user.findOne --> with duplicate email id's which object will be returned

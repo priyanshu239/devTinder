@@ -3,15 +3,16 @@ const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
 
+// Reads the json object convert it into javascript object
+app.use(express.json());
+
 app.post("/signup", async (req, res) => {
-    // creating a new instance of the user model
-    const user = new User({
-        firstName : "sachin tendulka",
-        lastName : "kumar",
-        emailId : "sachin@gmail.com",
-        password : "abcd1234",
-    });
-    try{
+
+    // Creating a new instance of the user model
+    const user = new User(req.body);
+
+    try{ 
+        // New document will be collected in the user collection in the devTinder database
         await user.save();
         res.send("User added succesfully");
     } catch (err) {
@@ -20,8 +21,48 @@ app.post("/signup", async (req, res) => {
 
 });
 
+// Get user by email
+app.get("/user", async (req, res) => {
+    const userEmail = req.body.emailId;
 
-// start the server only after the database is connected succesfully 
+    try{
+        const user = await User.findOne({emailId: userEmail});
+        if(!user) {
+            res.status(400).send("Something went wrong");
+        }
+        else {
+            res.send(user);
+        }
+        // const users = await User.find({ emailId: userEmail });
+        // if(users.length === 0){
+        //     res.status(404).send("User not found");
+        // }else {
+        //     res.send(users);
+        // }
+        
+    } catch (err) {
+        res.status(400).send("Something went wrong");
+    }
+    
+});
+
+
+// Feed API - Get / feed - get all the users from the database
+app.get("/feed", async (req, res) => {    
+    try{
+        const users = await User.find({});
+        if(users.length === 0){
+            res.status(404).send("User not found");
+        }else {
+            res.send(users);
+        } 
+    } catch (err) {
+        res.status(400).send("Something went wrong");
+    }
+});
+
+
+// Start the server only after the database is connected succesfully 
 connectDB()
 .then(() => {
     console.log("Database connected succesfully....");
