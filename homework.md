@@ -40,3 +40,11 @@
 add the express.json middleware to your app
 - make yoour signup API dynamic to recieve data from end user
 - user.findOne --> with duplicate email id's which object will be returned
+- update the user API
+- epxlore models methods from mongoose documentation
+- explore schematype from the documentation 
+- add required, unique, lowercase, min, minlength, trim
+- add default 
+- create a custom validator for gender
+- improve the DB schema - put appropriate validations on each field 
+- add timestamps to the userSchema 
