@@ -53,3 +53,8 @@ add the express.json middleware to your app
 - Data Sanitizing - Add API validator for each field
 - Install validator
 - Explore validator library functions and use validator functions for password, email, password
+- validate data in signup API
+- install bcrypt package 
+- create a password hash using bcrypt.hash
+- create login API
+- compare passwords and throw errors if email or password is invalid
