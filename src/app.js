@@ -5,10 +5,14 @@ const User = require("./models/user");
 const {validateSignUpData} = require("./utils/validation");
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken");
+const {userAuth} = require("../middlewares/auth");
 
 
 // Reads the json object convert it into javascript object
 app.use(express.json());
+app.use(cookieParser());
 
 // create new user
 app.post("/signup", async (req, res) => {
@@ -54,10 +58,18 @@ app.post("/login", async(req,res) => {
         if(!user){
             throw new Error("Invalid Credentials");
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await user.validatePassword(password);
 
         if(isPasswordValid) {
-            res.send("Login Successful!");
+            // create a JWT token (schema methods in user.js)
+            const token = await user.getJWT();         
+
+            // add the token to cookie and send the response back to user
+            res.cookie("token",token, {
+                expires: new Date(Date.now()+ 8*3600000)} 
+            );
+            res.send("login succesful");
+
         } else {
             throw new Error("Incorrect Password");
         }
@@ -67,80 +79,22 @@ app.post("/login", async(req,res) => {
     }
 });
 
-// Get user by email
-app.get("/user", async (req, res) => {
-    const userEmail = req.body.emailId;
+app.get("/profile",userAuth, async (req, res) => {
+    try {
+    const user = req.user;
+    res.send(user);
 
-    try{
-        const users = await User.find({ emailId: userEmail });
-        if(users.length === 0){
-            res.status(404).send("User not found");
-        }else {
-            res.send(users);
-        }
-        
-    } catch (err) {
-        res.status(400).send("Something went wrong");
-    }
-    
-});
-
-// Feed API - Get / feed - get all the users from the database
-app.get("/feed", async (req, res) => {    
-    try{
-        const users = await User.find({});
-        if(users.length === 0){
-            res.status(404).send("User not found");
-        }else {
-            res.send(users);
-        }
-    } catch (err) {
-        res.status(400).send("Something went wrong");
+    } catch(err) {
+        res.status(400).send("ERROR : " + err.message);
     }
 });
 
-// Delete a user from database
-app.delete("/user", async (req, res) => {
-    try{
-        const userId = req.body.userId;
-        const user = await User.findByIdAndDelete(userId);
-        res.send("User deleted successfully");
-
-    } catch (err) {
-        res.status(400).send("Something went wrong");
-    }
+app.post("/sendConnectionRequest",userAuth, async(req, res) => {
+    const user = req.user;
+    console.log("Sending a connection request");
+    res.send(user.firstName+ " sent the connection request!");
 });
 
-// Update data of the user
-app.patch("/user/:userId", async (req, res) => {
-    // ? -> is userId not present code will not fail
-    const userId = req.params?.userId;
-    const data = req.body;
-    try{
-        const ALLOWED_UPDATES = ["photoUrl", "about", "gender", "age", "skills"];
-    
-        // Looping through all the keys(userId, emailId, gender etc) and checking it should be preseng in ALLOWED_UPDATES
-        const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
-        if(!isUpdateAllowed){
-            throw new Error("Update not allowed");
-        }
-        // ALREADY ADDED THIS VALIDATOR IN SCHEMA
-        // if(data?.skills.length > 10){
-        //     throw new Error("Skills can't be more than 10")
-        // }
-        
-        const user = await User.findByIdAndUpdate({_id: userId}, data, {
-            returnDocument: "after",
-            runValidators: true,
-        });
-        // see the data before update
-        console.log(user);
-        res.send("User updated successfully");
-
-    } catch (err){
-        res.status(400).send("Update Failed" + err.message);
-    }
-});
 
 // Start the server only after the database is connected succesfully 
 connectDB()
@@ -154,6 +108,84 @@ connectDB()
     console.error("database can't be connected");
 });
 
+
+
+
+
+// Get user by email
+// app.get("/user", async (req, res) => {
+//     const userEmail = req.body.emailId;
+
+//     try{
+//         const users = await User.find({ emailId: userEmail });
+//         if(users.length === 0){
+//             res.status(404).send("User not found");
+//         }else {
+//             res.send(users);
+//         }
+        
+//     } catch (err) {
+//         res.status(400).send("Something went wrong");
+//     }
+    
+// });
+
+// // Feed API - Get / feed - get all the users from the database
+// app.get("/feed", async (req, res) => {    
+//     try{
+//         const users = await User.find({});
+//         if(users.length === 0){
+//             res.status(404).send("User not found");
+//         }else {
+//             res.send(users);
+//         }
+//     } catch (err) {
+//         res.status(400).send("Something went wrong");
+//     }
+// });
+
+// // Delete a user from database
+// app.delete("/user", async (req, res) => {
+//     try{
+//         const userId = req.body.userId;
+//         const user = await User.findByIdAndDelete(userId);
+//         res.send("User deleted successfully");
+
+//     } catch (err) {
+//         res.status(400).send("Something went wrong");
+//     }
+// });
+
+// // Update data of the user
+// app.patch("/user/:userId", async (req, res) => {
+//     // ? -> is userId not present code will not fail
+//     const userId = req.params?.userId;
+//     const data = req.body;
+//     try{
+//         const ALLOWED_UPDATES = ["photoUrl", "about", "gender", "age", "skills"];
+    
+//         // Looping through all the keys(userId, emailId, gender etc) and checking it should be preseng in ALLOWED_UPDATES
+//         const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
+//         if(!isUpdateAllowed){
+//             throw new Error("Update not allowed");
+//         }
+//         // ALREADY ADDED THIS VALIDATOR IN SCHEMA
+//         // if(data?.skills.length > 10){
+//         //     throw new Error("Skills can't be more than 10")
+//         // }
+        
+//         const user = await User.findByIdAndUpdate({_id: userId}, data, {
+//             returnDocument: "after",
+//             runValidators: true,
+//         });
+//         // see the data before update
+//         console.log(user);
+//         res.send("User updated successfully");
+
+//     } catch (err){
+//         res.status(400).send("Update Failed" + err.message);
+//     }
+// });
 
 
 

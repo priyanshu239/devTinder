@@ -58,3 +58,14 @@ add the express.json middleware to your app
 - create a password hash using bcrypt.hash
 - create login API
 - compare passwords and throw errors if email or password is invalid
+- install cookie-parser
+- send a dummy cookie to user
+- create GET/profile API and check if you get cookie back 
+- install jsonwebtoken 
+- in login API after email and password validation create a JWT token send it back to user
+- read the cookies inside your profile API and find the logged in user
+- write the userAuth middleware
+- Add the userAuth middleware in your profile API and a new sendConnectionRequest API
+- set the expiry of JWT tokens and cookies to 7 days
+- create userSchema method to getJWT()
+- create userSchema methods to comoarePassword(passowrdInputByUser, passwordHash);
