@@ -1,102 +1,21 @@
 const express = require('express');
 const connectDB = require("./config/database");
 const app = express();
-const User = require("./models/user");
-const {validateSignUpData} = require("./utils/validation");
-const bcrypt = require('bcrypt');
-const validator = require('validator');
 const cookieParser = require('cookie-parser');
-const jwt = require("jsonwebtoken");
-const {userAuth} = require("../middlewares/auth");
 
 
 // Reads the json object convert it into javascript object
 app.use(express.json());
 app.use(cookieParser());
 
-// create new user
-app.post("/signup", async (req, res) => {
-    try{ 
-    // Validation of data
-    validateSignUpData(req);
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
-    const {firstName, lastName, emailId, password} = req.body;
-    //Encrypt the password
-    const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
-    // if user already exist with same email
-    const existingUser = await User.findOne({emailId});
-    if(existingUser) return res.status(409).send("Email already exist");
-
-    // Creating a new instance of the user model
-    const user = new User({
-        firstName, lastName, emailId, password:passwordHash,
-    });
-
-    
-        // New document will be collected in the user collection in the devTinder database
-        await user.save();
-        res.send("User added succesfully!");
-    } catch (err) {
-        res.status(400).send(" ERROR :" + err.message);
-    }
-
-});
-// login user
-app.post("/login", async(req,res) => {
-    try{
-        const {emailId, password} = req.body;
-        if (!emailId || !password) {
-            throw new Error("Email and password are required");
-
-        }
-        if(!validator.isEmail(emailId)){
-            throw new Error("Invalid Email address");
-        }
-        const user  = await User.findOne({emailId: emailId});
-        if(!user){
-            throw new Error("Invalid Credentials");
-        }
-        const isPasswordValid = await user.validatePassword(password);
-
-        if(isPasswordValid) {
-            // create a JWT token (schema methods in user.js)
-            const token = await user.getJWT();         
-
-            // add the token to cookie and send the response back to user
-            res.cookie("token",token, {
-                expires: new Date(Date.now()+ 8*3600000)} 
-            );
-            res.send("login succesful");
-
-        } else {
-            throw new Error("Incorrect Password");
-        }
-
-    } catch(err){
-        res.status(400).send("ERROR : " + err.message);
-    }
-});
-
-app.get("/profile",userAuth, async (req, res) => {
-    try {
-    const user = req.user;
-    res.send(user);
-
-    } catch(err) {
-        res.status(400).send("ERROR : " + err.message);
-    }
-});
-
-app.post("/sendConnectionRequest",userAuth, async(req, res) => {
-    const user = req.user;
-    console.log("Sending a connection request");
-    res.send(user.firstName+ " sent the connection request!");
-});
-
-
-// Start the server only after the database is connected succesfully 
 connectDB()
 .then(() => {
     console.log("Database connected succesfully....");
