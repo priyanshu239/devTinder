@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        enum: {
+            values: ["male", "female", "others"],
+            message: `{VALUE is not a valid gender type`
+        },
         // this validation function will only work when we are signing a new user 
         // if we want to update a user details it will not work
         // we have to enable it to run on updates also 
@@ -80,6 +84,7 @@ const userSchema = new mongoose.Schema({
     // timestamps is for storing time when the user registered on our platform
 }, {timestamps :true});
 
+userSchema.index({firstName: 1});
 
 // does not work in arrow function
 userSchema.methods.getJWT = async function() {

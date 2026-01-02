@@ -78,3 +78,13 @@
 - Import this router in app.js
 - Create PATCH /profile/edit
 - Create PATCH /profile/password (forgot password api)
+- Make you validate all data in every POST, PATCH apis
+
+- Create Connection request schems
+- send connection request API
+- think about all corner cases
+- $or query / $and query (read)
+- schema.pre("save) function 
+- Read this article about compound indexes 
+- Read more about indexes in mongoDB
+- Why indexes?? advantages and disadvantages 
