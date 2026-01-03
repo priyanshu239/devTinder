@@ -38,8 +38,6 @@ requestRouter.post("/request/send/:status/:toUserId",userAuth, async(req, res) =
                 message: "Connection request already exists !"
             })
         }
-
-
         const connectionRequest = new ConnectionRequest({
             fromUserId, toUserId, status
         })
@@ -54,5 +52,14 @@ requestRouter.post("/request/send/:status/:toUserId",userAuth, async(req, res) =
         res.status(400).send("ERROR: " + err.message);
     }
 });
+
+// requestRouter.post("/request/review/:status/:requestId", userAuth, async (req,res) => {
+//     try{
+//         const loggedInUser = req.user;
+
+//     } catch (err){
+//         res.status(400).send("Error: ", err.message);
+//     }
+// });
 
 module.exports = requestRouter;
