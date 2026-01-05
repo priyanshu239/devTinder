@@ -88,3 +88,5 @@
 - Read this article about compound indexes 
 - Read more about indexes in mongoDB
 - Why indexes?? advantages and disadvantages 
+- write code with proper validations for POST /request/review/:status/:requestId
+- thought process - POST vs GET
