@@ -13,7 +13,7 @@
 - POST /request/review/:status/:userId
 
 ## userRouter
-- GET /user/requests
+- GET /user/requests/received
 - GET /user/connections
 - GET /user/feed - Gets you the profiles in 
 

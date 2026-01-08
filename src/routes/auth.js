@@ -14,7 +14,6 @@ authRouter.post("/signup", async (req, res) => {
     const {firstName, lastName, emailId, password} = req.body;
     //Encrypt the password
     const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
 
     // if user already exist with same email
     const existingUser = await User.findOne({emailId});

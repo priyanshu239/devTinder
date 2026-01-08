@@ -90,3 +90,5 @@
 - Why indexes?? advantages and disadvantages 
 - write code with proper validations for POST /request/review/:status/:requestId
 - thought process - POST vs GET
+- Read about ref and populate 
+- create GET /user/requests/received with all the checks

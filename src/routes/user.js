@@ -1,18 +1,25 @@
-// const express = require('express');
-// const userRouter = express.Router();
+const express = require('express');
+const userRouter = express.Router();
 
-// const { userAuth } = require("../middlewares/auth");
-// const ConnectionRequest = require("../models/connectionRequest");
+const { userAuth } = require("../middlewares/auth");
+const ConnectionRequest = require("../models/connectionRequest");
 
-// // Get all the pending connection request for the logged-in user
-// userRouter.get("/user/requests", userAuth, async (req, res) => {
-//     try {
-//         const loggedInUser = req.user; 
+// Get all the pending connection request for the logged-in user
+userRouter.get("/user/requests/received", userAuth, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
 
-//         const connectionRequest = await ConnectionRequest;
-//     } catch (err) {
-//         res.status(400).send("Error: " + err.message);
-//     }
-// });
+        const connectionRequest = await ConnectionRequest.find({
+            toUserId: loggedInUser._id,
+            status: "interested"
+        }).populate("fromUserId", "firstName lastName photoUrl age gender about skills");
+        // }).populate("fromUserId", ["firstName", "lastName"]);
 
-// module.exports = userRouter;
+
+        res.json({message: "Data fetched successfully ", data: connectionRequest})
+    } catch (err) {
+        res.status(400).send("Error: " + err.message);
+    }
+});
+
+module.exports = userRouter;
