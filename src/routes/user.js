@@ -31,10 +31,17 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
                 {toUserId: loggedInUser._id, status: "accepted"},
                 {fromUserId: loggedInUser._id, status: "accepted"}
             ]
-        }).populate("fromUserId", "firstName lastName photoUrl age gender about skills");
+        }).populate("fromUserId", "firstName lastName photoUrl age gender about skills")
+          .populate("toUserId", "firstName lastName photoUrl age gender about skills");
 
-        const data = connectonRequests.map((row) => row.fromUserId);
-        res.json({data:  data});
+            console.log(connectonRequests);
+        const data = connectonRequests.map((row) => {
+            if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
+                return row.toUserId
+            }
+            return row.fromUserId;
+        });
+        res.json({data: data});
     } catch (err){
         res.status(400).send({message: err.message});
     }
