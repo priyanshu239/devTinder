@@ -22,4 +22,22 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     }
 });
 
+userRouter.get("/user/connections", userAuth, async (req, res) => {
+    try{
+        const loggedInUser = req.user;
+
+        const connectonRequests = await ConnectionRequest.find({
+            $or: [
+                {toUserId: loggedInUser._id, status: "accepted"},
+                {fromUserId: loggedInUser._id, status: "accepted"}
+            ]
+        }).populate("fromUserId", "firstName lastName photoUrl age gender about skills");
+
+        const data = connectonRequests.map((row) => row.fromUserId);
+        res.json({data:  data});
+    } catch (err){
+        res.status(400).send({message: err.message});
+    }
+});
+
 module.exports = userRouter;
