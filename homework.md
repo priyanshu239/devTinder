@@ -93,3 +93,7 @@
 - Read about ref and populate 
 - create GET /user/requests/received with all the checks
 - Create GET /user/connections
+
+- Logic for GET /feed API
+- Explore the $nin, $and, $ne and others query operators
+
